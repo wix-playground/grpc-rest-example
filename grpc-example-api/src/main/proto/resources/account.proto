@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package grpc.example.api.v1;
+
+option java_package = "com.wix.grpc.example.api.v1";
+
+message Account {
+    string id       = 1;
+    string name     = 2;
+    string country  = 3;
+    string email    = 4;
+
+    Address address = 10;
+}
+
+message Address {
+    string zipCode  = 1;
+    string city     = 2;
+    string state    = 3;
+    string address  = 4;
+}

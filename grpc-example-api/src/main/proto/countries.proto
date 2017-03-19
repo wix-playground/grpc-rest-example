@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package grpc.example.api.v1;
+
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+import "resources/country.proto";
+
+option java_package = "com.wix.grpc.example.api.v1";
+
+service Countries {
+    rpc ListCountries(ListCountriesRequest) returns (ListCountriesResponse) {
+        option (google.api.http) = { get: "/api/countries" };
+    }
+
+    rpc GetCountry(GetCountryRequest) returns (Country) {
+        option (google.api.http) = { get: "/api/countries/{countryId}" };
+    }
+}
+
+message ListCountriesResponse {
+    repeated Country countries = 1;
+}
+
+message ListCountriesRequest {
+    bool includePaymentFields = 1;
+}
+
+message GetCountryRequest {
+    string countryId = 1;
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <groupId>com.wixpress.grpc</groupId>
+    <artifactId>grpc-example-dependencies</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>com.wixpress.common</groupId>
+        <artifactId>wix-scala-parent-ng</artifactId>
+        <version>100.0.0-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <grpc.version>1.1.2</grpc.version>
+        <protobuf.version>3.2.0</protobuf.version>
+        <scalapbc.version>0.5.47</scalapbc.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>${grpc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>${protobuf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api.grpc</groupId>
+            <artifactId>googleapis-common-protos</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.trueaccord.scalapb</groupId>
+            <artifactId>scalapbc_2.11</artifactId>
+            <version>${scalapbc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.trueaccord.scalapb</groupId>
+            <artifactId>scalapb-runtime-grpc_2.11</artifactId>
+            <version>${scalapbc.version}</version>
+        </dependency>
+    </dependencies>
+</project>

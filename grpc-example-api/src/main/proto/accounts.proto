@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package grpc.example.api.v1;
+
+import "google/api/annotations.proto";
+import "resources/account.proto";
+
+option java_package = "com.wix.grpc.example.api.v1";
+
+service Accounts {
+    rpc Get(GetAccountRequest) returns (Account) {
+        option (google.api.http) = { get: "/api/accounts/{accountId}" };
+    }
+
+    rpc Create(CreateAccountRequest) returns (Account) {
+        option (google.api.http) = { post: "/api/accounts" };
+    }
+
+    rpc Update(Account) returns (Account) {
+        option (google.api.http) = { put: "/api/accounts/{id}" };
+    }
+
+    rpc InternalUpdate(InternalUpdateRequest) returns (Account);
+}
+
+message GetAccountRequest {
+    string accountId = 1;
+}
+
+message CreateAccountRequest {
+    string name     = 1;
+    string email    = 2;
+    string country  = 3;
+}
+
+message InternalUpdateRequest {
+    string name     = 1;
+    string country  = 3;
+}
