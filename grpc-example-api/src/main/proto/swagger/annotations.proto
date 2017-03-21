@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package wix.swagger;
+
+import "google/protobuf/descriptor.proto";
+
+option java_multiple_files = true;
+option java_outer_classname = "AnnotationsProto";
+option java_package = "com.wix.swagger";
+
+extend google.protobuf.FieldOptions {
+    SwaggerField field = 72212354;
+}
+
+extend google.protobuf.MessageOptions {
+    SwaggerMessage message = 72212354;
+}
+
+extend google.protobuf.MethodOptions {
+    SwaggerMethod method = 72212354;
+}
+
+message SwaggerField {
+    string desc             = 1; // brief description of the field
+    bool required           = 2; // is field required or no
+    bool readOnly           = 3; // is field read only
+
+    string allowableValues  = 10; // allowed values for this field
+}
+
+message SwaggerMessage {
+    string desc             = 1; // brief description of the type
+}
+
+message SwaggerMethod {
+    string desc             = 1; // brief description of the operation
+    repeated string tags    = 2; // tags which are assigned to the operation
+    int32 successHttpCode   = 3; // allows to override success status code, 200 by default
+
+    HttpResponseOverrides responses = 10;
+}
+
+message HttpResponseOverrides {
+    string ok           = 200;
+    string badRequest   = 400;
+    string unathorized  = 401;
+    string conflict     = 409;
+    // etc... ability to describe all statuses
+}

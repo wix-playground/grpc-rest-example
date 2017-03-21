@@ -3,20 +3,26 @@ syntax = "proto3";
 package grpc.example.api.v1;
 
 import "google/api/annotations.proto";
+import "swagger/annotations.proto";
 import "resources/account.proto";
 
 option java_package = "com.wix.grpc.example.api.v1";
 
 service Accounts {
     rpc Get(GetAccountRequest) returns (Account) {
+        option (wix.swagger.method).desc = "Finds account by its id";
         option (google.api.http) = { get: "/api/accounts/{accountId}" };
     }
 
     rpc Create(CreateAccountRequest) returns (Account) {
+        option (wix.swagger.method).desc = "Creates a new account with provided information";
+        option (wix.swagger.method).responses = {conflict: "Account with the same email is already exists"};
+
         option (google.api.http) = { post: "/api/accounts" };
     }
 
     rpc Update(Account) returns (Account) {
+        option (wix.swagger.method).desc = "Updates account settings";
         option (google.api.http) = { put: "/api/accounts/{id}" };
     }
 

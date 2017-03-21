@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package grpc.example.api.v1;
+
+option java_package = "com.wix.grpc.example.api.v1";
+
+// common data for all requests that supports pagination
+message PaginationResponse {
+    int32 offset    = 1;
+    int32 limit     = 2;
+    int32 total     = 3;
+}
+
+message PaginationRequest {
+    int32 offset    = 1;
+    int32 limit     = 2;
+}

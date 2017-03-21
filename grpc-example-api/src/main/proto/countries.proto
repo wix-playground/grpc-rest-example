@@ -3,8 +3,8 @@ syntax = "proto3";
 package grpc.example.api.v1;
 
 import "google/api/annotations.proto";
-import "google/api/http.proto";
 import "resources/country.proto";
+import "common/pagination.proto";
 
 option java_package = "com.wix.grpc.example.api.v1";
 
@@ -20,10 +20,14 @@ service Countries {
 
 message ListCountriesResponse {
     repeated Country countries = 1;
+
+    PaginationResponse pagination = 10; //[wix.json.unwrapped = true]
 }
 
 message ListCountriesRequest {
     bool includePaymentFields = 1;
+
+    PaginationRequest pagination = 10; //[wix.json.unwrapped = true]
 }
 
 message GetCountryRequest {

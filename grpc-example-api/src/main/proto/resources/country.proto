@@ -2,15 +2,22 @@ syntax = "proto3";
 
 package grpc.example.api.v1;
 
+import "swagger/annotations.proto";
+
 option java_package = "com.wix.grpc.example.api.v1";
 
 message PaymentField {
-    string name = 1;
-    bool required = 2;
+    option(wix.swagger.message).desc = "Information which should be requested from buyer to make a payment";
+
+    string fieldName    = 1;
+    bool required       = 2;
+    string description  = 3;
 }
 
 message Country {
-    string code = 1;
+    string code = 1 [
+        (wix.swagger.field) = {desc: "Country two-letters code"}
+    ];
     string name = 2;
 
     repeated PaymentField paymentFields = 10;
