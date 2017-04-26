@@ -7,6 +7,7 @@
     <groupId>com.wixpress.grpc</groupId>
     <artifactId>grpc-example</artifactId>
     <version>1.0.0-SNAPSHOT</version>
+    <description>grpc-example</description>
 
     <parent>
         <groupId>com.wixpress</groupId>

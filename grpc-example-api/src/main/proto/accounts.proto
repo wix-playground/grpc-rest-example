@@ -9,20 +9,20 @@ import "resources/account.proto";
 option java_package = "com.wix.grpc.example.api.v1";
 
 service Accounts {
+    //Finds account by its id
     rpc Get(GetAccountRequest) returns (Account) {
-        option (wix.swagger.method).desc = "Finds account by its id";
         option (google.api.http) = { get: "/api/accounts/{accountId}" };
     }
 
+    //Creates a new account with provided information
     rpc Create(CreateAccountRequest) returns (Account) {
-        option (wix.swagger.method).desc = "Creates a new account with provided information";
         option (wix.swagger.method).responses = {conflict: "Account with the same email is already exists"};
 
         option (google.api.http) = { post: "/api/accounts" };
     }
 
+    //Updates account settings
     rpc Update(Account) returns (Account) {
-        option (wix.swagger.method).desc = "Updates account settings";
         option (google.api.http) = { put: "/api/accounts/{id}" };
     }
 

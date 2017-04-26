@@ -20,6 +20,16 @@
             <version>1.0.0-SNAPSHOT</version>
             <type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>com.wixpress.grpc</groupId>
+            <artifactId>grpc-common</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wixpress.grpc</groupId>
+            <artifactId>grpc-documentation</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -103,6 +113,8 @@
                                 <argument>${project.basedir}/src/main/proto/resources/account.proto</argument>
                                 <argument>${project.basedir}/src/main/proto/countries.proto</argument>
                                 <argument>${project.basedir}/src/main/proto/accounts.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/common/pagination.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/swagger/annotations.proto</argument>
                                 <argument>${project.build.directory}/proto-dep/google/api/annotations.proto</argument>
                                 <argument>${project.build.directory}/proto-dep/google/api/http.proto</argument>
                             </arguments>
@@ -114,6 +126,59 @@
                         <groupId>com.trueaccord.scalapb</groupId>
                         <artifactId>scalapbc_2.11</artifactId>
                         <version>${scalapbc.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.5.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-swagger-protobuf-documentation</id>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <mainClass>com.wix.grpc.swagger.SwaggerPBC</mainClass>
+                            <cleanupDaemonThreads>false</cleanupDaemonThreads>
+                            <includePluginDependencies>true</includePluginDependencies>
+                            <classpathScope>compile</classpathScope>
+                            <executableDependency>
+                                <groupId>com.wixpress.grpc</groupId>
+                                <artifactId>grpc-documentation</artifactId>
+                            </executableDependency>
+                            <arguments>
+                                <argument>-v300</argument>
+                                <argument>--throw</argument>
+                                <argument>--proto_path=${project.basedir}/src/main/proto</argument>
+                                <argument>--proto_path=${project.basedir}/src/main/proto/resources</argument>
+                                <argument>--proto_path=${project.build.directory}/proto-dep</argument>
+                                <argument>--scala_out=grpc:${project.build.directory}/generated-sources/protobuf/scala</argument>
+                                <argument>${project.basedir}/src/main/proto/resources/country.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/resources/account.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/countries.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/accounts.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/common/pagination.proto</argument>
+                                <argument>${project.basedir}/src/main/proto/swagger/annotations.proto</argument>
+                                <argument>${project.build.directory}/proto-dep/google/api/annotations.proto</argument>
+                                <argument>${project.build.directory}/proto-dep/google/api/http.proto</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.trueaccord.scalapb</groupId>
+                        <artifactId>scalapbc_2.11</artifactId>
+                        <version>${scalapbc.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.wixpress.grpc</groupId>
+                        <artifactId>grpc-documentation</artifactId>
+                        <version>1.0.0-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
             </plugin>
