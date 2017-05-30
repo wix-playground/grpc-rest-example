@@ -3,9 +3,9 @@ package com.wix.grpc.example
 import com.wix.e2e.http._
 import com.wix.e2e.{BaseUri, ResponseMatchers}
 import org.specs2.mutable.SpecificationWithJUnit
-import AccountsRestE2E._
+import AccountsRestE2ETestSupport._
 
-class AccountsRestE2E extends SpecificationWithJUnit with ResponseMatchers {
+class AccountsRestE2ETest extends SpecificationWithJUnit with ResponseMatchers {
   sequential
   ITEnv
   implicit val sut = BaseUri(host = "localhost", port = 9901)
@@ -34,12 +34,12 @@ class AccountsRestE2E extends SpecificationWithJUnit with ResponseMatchers {
   }
 }
 
-object AccountsRestE2E {
+object AccountsRestE2ETestSupport {
 
-  private case class CreateAccountRequest(name: String, country: String, email: String)
+  case class CreateAccountRequest(name: String, country: String, email: String)
 
-  private case class Account(id: String, name: String, country: String = null, email: String = null, address: Option[AccountAddress] = None)
+  case class Account(id: String, name: String, country: String = null, email: String = null, address: Option[AccountAddress] = None)
 
-  private case class AccountAddress(zipCode: String = null, city: String = null, state: String = null, address: String = null)
+  case class AccountAddress(zipCode: String = null, city: String = null, state: String = null, address: String = null)
 
 }

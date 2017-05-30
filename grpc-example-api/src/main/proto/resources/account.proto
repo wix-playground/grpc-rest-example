@@ -2,15 +2,13 @@ syntax = "proto3";
 
 package grpc.example.api.v1;
 
-import "swagger/annotations.proto";
-
 option java_package = "com.wix.grpc.example.api.v1";
 
 message Account {
-    string id       = 1 [(wix.swagger.field).readOnly = true];
+    string id       = 1;
     string name     = 2;
     string country  = 3;
-    string email    = 4 [(wix.swagger.field).readOnly = true];
+    string email    = 4;
 
     Address address = 10;
 }

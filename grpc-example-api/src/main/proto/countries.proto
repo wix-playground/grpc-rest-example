@@ -21,13 +21,13 @@ service Countries {
 message ListCountriesResponse {
     repeated Country countries = 1;
 
-    PaginationResponse pagination = 10; //[wix.json.unwrapped = true]
+    PaginationResponse pagination = 10;
 }
 
 message ListCountriesRequest {
     bool includePaymentFields = 1;
 
-    PaginationRequest pagination = 10; //[wix.json.unwrapped = true]
+    PaginationRequest pagination = 10;
 }
 
 message GetCountryRequest {

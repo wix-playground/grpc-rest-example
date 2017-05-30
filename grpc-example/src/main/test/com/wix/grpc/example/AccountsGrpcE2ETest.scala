@@ -5,7 +5,7 @@ import com.wix.grpc.example.api.v1.accounts.{AccountsGrpc, CreateAccountRequest,
 import io.grpc.{ManagedChannelBuilder, StatusRuntimeException}
 import org.specs2.mutable.SpecificationWithJUnit
 
-class AccountsGrpcE2E extends SpecificationWithJUnit {
+class AccountsGrpcE2ETest extends SpecificationWithJUnit {
   ITEnv
   private val channel = ManagedChannelBuilder.forAddress("localhost", 9902).usePlaintext(true).directExecutor().build()
   private val accountsClient = AccountsGrpc.blockingStub(channel)
