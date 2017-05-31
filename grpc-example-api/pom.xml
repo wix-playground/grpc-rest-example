@@ -99,6 +99,7 @@
                                 <argument>--proto_path=${project.basedir}/src/main/proto/resources</argument>
                                 <argument>--proto_path=${project.build.directory}/proto-dep</argument>
                                 <argument>--scala_out=grpc:${project.build.directory}/generated-sources/protobuf/scala</argument>
+                                <argument>${project.basedir}/src/main/proto/common/callback.proto</argument>
                                 <argument>${project.basedir}/src/main/proto/common/pagination.proto</argument>
                                 <argument>${project.basedir}/src/main/proto/resources/country.proto</argument>
                                 <argument>${project.basedir}/src/main/proto/resources/account.proto</argument>
