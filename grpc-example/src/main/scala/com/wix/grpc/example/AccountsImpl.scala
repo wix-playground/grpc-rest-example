@@ -7,8 +7,9 @@ import com.wix.grpc.example.api.v1._
 import scala.concurrent.Future
 
 class AccountsImpl extends Accounts {
-  override def get(request: GetAccountRequest): Future[Account] =
+  override def get(request: GetAccountRequest): Future[Account] = {
     Account(id = "10", name = "10")
+  }
 
   override def create(request: CreateAccountRequest): Future[Account] =
     Account(id = "hey", name = request.name, country = request.country, email = request.email,

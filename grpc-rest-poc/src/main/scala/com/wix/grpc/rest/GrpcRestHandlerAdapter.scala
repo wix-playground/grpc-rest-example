@@ -13,11 +13,15 @@ import org.springframework.web.servlet.{HandlerAdapter, HandlerMapping, ModelAnd
 
 import scala.collection.JavaConversions._
 
-class GrpcRestHandlerAdapter(transport: GrpcRestTransport) extends HandlerAdapter {
+class GrpcRestHandlerAdapter(transport: GrpcRestTransport, metadataProvider: MetadataProvider) extends HandlerAdapter {
 
   override def handle(request: HttpServletRequest, response: HttpServletResponse, handler: scala.Any): ModelAndView = {
     val endpoint = handler.asInstanceOf[GrpcRestEndpoint]
-    val outputMessage = transport.call(endpoint, httpRequestToGrpcInput(request, endpoint.mapping, endpoint.inputType))
+    val input = httpRequestToGrpcInput(request, endpoint.mapping, endpoint.inputType)
+    val metadata = metadataProvider.metadataFor(request)
+
+    val outputMessage = transport.call(endpoint, input, metadata)
+
     grpcOutputToHttpResponse(outputMessage, response)
     null
   }

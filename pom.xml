@@ -17,7 +17,7 @@
 
     <modules>
         <module>grpc-example-dependencies</module>
-        <module>grpc-common</module>
+        <module>grpc-rest-poc</module>
         <module>grpc-example-api</module>
 
         <module>grpc-example</module>
