@@ -1,9 +1,8 @@
 package com.wix.grpc.example
 
-import com.wix.grpc.example.api.v1.account.{Account, Address}
-import com.wix.grpc.example.api.v1.accounts.AccountsGrpc.Accounts
-import com.wix.grpc.example.api.v1.accounts.{CreateAccountRequest, GetAccountRequest, InternalUpdateRequest}
 import com.wix.grpc.FutureHelper._
+import com.wix.grpc.example.api.v1.AccountsGrpc.Accounts
+import com.wix.grpc.example.api.v1._
 
 import scala.concurrent.Future
 

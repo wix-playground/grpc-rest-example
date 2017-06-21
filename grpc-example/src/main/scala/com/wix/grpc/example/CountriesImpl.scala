@@ -1,9 +1,8 @@
 package com.wix.grpc.example
 
-import com.wix.grpc.example.api.v1.countries.CountriesGrpc.Countries
-import com.wix.grpc.example.api.v1.countries.{GetCountryRequest, ListCountriesRequest, ListCountriesResponse}
-import com.wix.grpc.example.api.v1.country.Country
 import com.wix.grpc.FutureHelper._
+import com.wix.grpc.example.api.v1.CountriesGrpc.Countries
+import com.wix.grpc.example.api.v1.{Country, GetCountryRequest, ListCountriesRequest, ListCountriesResponse}
 
 import scala.concurrent.Future
 

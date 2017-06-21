@@ -2,8 +2,7 @@ package com.wix.grpc.example
 
 import com.wix.bootstrap.jetty.BootstrapServer
 import com.wix.grpc.GrpcServicesRegistry
-import com.wix.grpc.example.api.v1.accounts.AccountsGrpc
-import com.wix.grpc.example.api.v1.countries.CountriesGrpc
+import com.wix.grpc.example.api.v1.{AccountsGrpc, CountriesGrpc}
 import com.wix.grpc.rest.GrpcRestServicesConfig
 import com.wix.grpc.server.GrpcServerConfig
 import org.springframework.context.annotation.{Bean, Import}

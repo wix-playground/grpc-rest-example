@@ -23,6 +23,7 @@ class DefaultGrpcRestTransport(registry: GrpcServicesRegistry) extends GrpcRestT
   }
   private lazy val channel = InProcessChannelBuilder.forName(InProcessServerName)
     .directExecutor()
+    .intercept()
     .build()
 
   override def start(): Unit = server.start()

@@ -1,7 +1,6 @@
 package com.wix.grpc.example
 
-import com.wix.grpc.example.api.v1.account.{Account, Address}
-import com.wix.grpc.example.api.v1.accounts.{AccountsGrpc, CreateAccountRequest, GetAccountRequest, InternalUpdateRequest}
+import com.wix.grpc.example.api.v1._
 import io.grpc.{ManagedChannelBuilder, StatusRuntimeException}
 import org.specs2.mutable.SpecificationWithJUnit
 

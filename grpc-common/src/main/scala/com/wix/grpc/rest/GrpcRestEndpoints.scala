@@ -2,7 +2,8 @@ package com.wix.grpc.rest
 
 import com.google.protobuf.DescriptorProtos.MethodDescriptorProto
 import com.google.protobuf.Descriptors.Descriptor
-import com.google.protobuf.{DynamicMessage, ExtensionRegistry}
+import com.google.protobuf.DynamicMessage
+import com.google.protobuf.descriptor.MethodOptions
 import com.trueaccord.scalapb.grpc.AbstractService
 import com.wix.grpc.rest.HttpMapping.toHttpMappings
 import com.wix.grpc.{GrpcService, GrpcServicesRegistry}
@@ -26,11 +27,12 @@ object GrpcRestEndpoints {
   private def serviceEndpoints(service: GrpcService[_ <: AbstractService]): Seq[GrpcRestEndpoint] = {
     val proto = service.service.serviceCompanion.javaDescriptor.toProto
     val parser = proto.getParserForType
-    val withExtensions = parser.parseFrom(proto.toByteArray, extensionsRegistry)
 
-    for (method <- withExtensions.getMethodList;
-         httpMapping <- httpMappings(method);
-         grpcMethod <- grpcUnaryMethod(service, method.getName)) yield {
+    for {
+      method <- proto.getMethodList
+      httpMapping <- httpMappings(method)
+      grpcMethod <- grpcUnaryMethod(service, method.getName)
+    } yield {
       val descriptor = service.service.serviceCompanion.javaDescriptor.findMethodByName(method.getName)
       GrpcRestEndpoint(
         httpMapping,
@@ -46,13 +48,9 @@ object GrpcRestEndpoints {
       .filter(_.getMethodDescriptor.getType == MethodType.UNARY)
 
   private def httpMappings(method: MethodDescriptorProto) = {
-    Option(method.getOptions.getExtension(com.google.api.AnnotationsProto.http)) map toHttpMappings getOrElse Seq.empty
-  }
-
-  private def extensionsRegistry = {
-    val extensionRegistry = ExtensionRegistry.newInstance()
-    extensionRegistry.add(com.google.api.AnnotationsProto.http)
-    extensionRegistry
+    val bytes = method.getOptions.toByteArray
+    val scalaOption = MethodOptions.parseFrom(bytes)
+    com.google.api.AnnotationsProto.http.get(scalaOption) map toHttpMappings getOrElse Seq.empty
   }
 
   private def withDynamicMarshallers(descriptor: MethodDescriptor[_, _], input: Descriptor, output: Descriptor) =

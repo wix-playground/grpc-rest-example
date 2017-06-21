@@ -3,7 +3,6 @@ syntax = "proto3";
 package grpc.example.api.v1;
 
 import "google/api/annotations.proto";
-import "common/callback.proto";
 import "resources/account.proto";
 
 option java_package = "com.wix.grpc.example.api.v1";
@@ -19,8 +18,6 @@ service Accounts {
 
     rpc Update(Account) returns (Account) {
         option (google.api.http) = { put: "/api/accounts/{id}" };
-        option (wix.callback).payload = "SomeEvent";
-        option (wix.callback).topic = "kafka/example/SomeEvent";
     }
 
     rpc InternalUpdate(InternalUpdateRequest) returns (Account);
