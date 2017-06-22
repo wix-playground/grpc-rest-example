@@ -1,17 +1,20 @@
 package com.wix.grpc.rest
 
-import java.io.{Reader, StringReader}
+import java.io.Reader
 import java.util.{Map => JMap}
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 
 import com.google.protobuf.Descriptors.Descriptor
 import com.google.protobuf.util.JsonFormat
 import com.google.protobuf.{DynamicMessage, Message}
+import com.wixpress.hoopoe.json.JsonMapper.Implicits.global
+import com.wixpress.hoopoe.json._
 import org.apache.commons.io.IOUtils
 import org.springframework.http.HttpMethod._
 import org.springframework.web.servlet.{HandlerAdapter, HandlerMapping, ModelAndView}
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
+import scala.collection.mutable
 
 class GrpcRestHandlerAdapter(transport: GrpcRestTransport, metadataProvider: MetadataProvider) extends HandlerAdapter {
 
@@ -33,16 +36,16 @@ class GrpcRestHandlerAdapter(transport: GrpcRestTransport, metadataProvider: Met
   private def httpRequestToGrpcInput(request: HttpServletRequest, mapping: HttpMapping,
                                      inputType: Descriptor): DynamicMessage = {
     val builder = DynamicMessage.newBuilder(inputType)
+    val requestMap = mutable.Map.empty[String, Any]
     if (requestWithBody(request)) {
-      readBody(request.getReader, mapping, builder)
+      requestMap ++= readBody(request.getReader, mapping, builder)
     }
-    val additional = pathParams(request) ++ request.getParameterMap.mapValues(_(0))
-    for {
-      (key, value) <- additional
-      fieldDescriptor <- Option(inputType.findFieldByName(key))
-    } {
-      builder.setField(fieldDescriptor, value)
+
+    val additional = pathParams(request) ++ request.getParameterMap.asScala.mapValues(_(0))
+    for ((key, value) <- additional) {
+      putDeep(key.split("\\.").toList, value, requestMap)
     }
+    JsonFormat.parser().merge(requestMap.asJsonStr, builder)
     builder.build()
   }
 
@@ -53,7 +56,7 @@ class GrpcRestHandlerAdapter(transport: GrpcRestTransport, metadataProvider: Met
 
   private def pathParams(request: HttpServletRequest): Map[String, String] = {
     val attr = request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE)
-    if (attr == null) Map.empty else attr.asInstanceOf[JMap[String, String]].toMap
+    if (attr == null) Map.empty else attr.asInstanceOf[JMap[String, String]].asScala.toMap
   }
 
   private def grpcOutputToHttpResponse(output: Message, response: HttpServletResponse): Unit = {
@@ -61,12 +64,15 @@ class GrpcRestHandlerAdapter(transport: GrpcRestTransport, metadataProvider: Met
     JsonFormat.printer().appendTo(output, writer)
   }
 
-  private def readBody(reader: Reader, mapping: HttpMapping, builder: DynamicMessage.Builder): Unit = {
-    val input = mapping.body map { payload =>
-      // TODO: this is inefficient but works
-      val wrapped = "{\"" + payload + "\":" + IOUtils.toString(reader) + "}"
-      new StringReader(wrapped)
-    } getOrElse reader
-    JsonFormat.parser().merge(input, builder)
+  private def readBody(reader: Reader, mapping: HttpMapping, builder: DynamicMessage.Builder): Map[String, Any] = {
+    val jsonContent = IOUtils.toString(reader).as[Map[String, Any]]
+    mapping.body.map(_ -> jsonContent).map(Map(_)).getOrElse(jsonContent)
+  }
+
+  private def putDeep(key: List[String], value: Any, current: mutable.Map[String, Any]): Unit = key match {
+    case head :: Nil => current += head -> value
+    case head :: tail =>
+      val nested = current.getOrElseUpdate(head, new mutable.HashMap[String, Any]).asInstanceOf[mutable.Map[String, Any]]
+      putDeep(tail, value, nested)
   }
 }

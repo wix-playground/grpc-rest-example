@@ -20,6 +20,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.wixpress.hoopoe</groupId>
+            <artifactId>hoopoe-json</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.wixpress</groupId>
             <artifactId>wix-server-bootstrap</artifactId>
             <version>${wixFrameworkVersion}</version>
